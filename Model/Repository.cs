@@ -18,6 +18,18 @@ namespace WebAPIApplication.Model
             products.Add(new Product { Id = 2, Name = "Second", Price = 200.00m });
             products.Add(new Product { Id = 3, Name = "Third", Price = 300.00m });
         }
+
+        public ICollection<ProductDTO> GetAll()
+        {
+            List<ProductDTO> res = new List<ProductDTO>();
+
+            foreach (Product p in products)
+            {
+                res.Add(Map.Map<ProductDTO>(p));
+            }
+
+            return res;
+        }
         public ProductDTO GetProduct(int id)
         {
             Product p = products.FirstOrDefault(pr => pr.Id == id);
@@ -25,9 +37,9 @@ namespace WebAPIApplication.Model
             return Map.Map<ProductDTO>(p);
         }
 
-        public void UpdateProduct(int id,ProductDTO input)
+        public void UpdateProduct(ProductDTO input)
         {
-            Product p = products.FirstOrDefault(pr => pr.Id == id);
+            Product p = products.FirstOrDefault(pr => pr.Id == input.Id);
             p = Map.Map<Product>(input);
               
         }

@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace WebAPIApplication.Model
 {
+
+
     public interface IRepository
     {
+
+        ICollection<ProductDTO> GetAll();
         ProductDTO GetProduct(int id);
 
-        void UpdateProduct(int id,ProductDTO input);
+        void UpdateProduct(ProductDTO input);
 
         IMapper Map { get; set; }
     }
