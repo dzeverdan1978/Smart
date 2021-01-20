@@ -22,18 +22,7 @@ namespace WebAPIApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowSpecificOrigin",
-                    builder =>
-                    {
-                        builder
-                        .WithOrigins("http://localhost:8080")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
-                    });
-            });
+            services.CorsConfiguration();
 
             var domain = $"https://{Configuration["Auth0:Domain"]}/";
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -54,13 +43,7 @@ namespace WebAPIApplication
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             // Auto Mapper Configurations
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            services.ConfigureMapper();
 
             services.AddSingleton<IRepository, Repository>();
         }
