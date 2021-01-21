@@ -24,18 +24,9 @@ namespace WebAPIApplication
         {
             services.CorsConfiguration();
 
-            var domain = $"https://{Configuration["Auth0:Domain"]}/";
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = domain;
-                    options.Audience = Configuration["Auth0:Audience"];
-                });
+            services.ConfigureAuthentication();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain)));
-            });
+            services.ConfigureAuthorization();
 
             services.AddControllers();
 
